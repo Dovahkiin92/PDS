@@ -2,7 +2,6 @@
 //Class StringBuffer and methods
 
 
-#include "pch.h"
 #include <iostream>
 #include "StringBuffer.h"
 int main()
