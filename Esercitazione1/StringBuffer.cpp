@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "StringBuffer.h"
 #include <string>
 using namespace std;
@@ -32,15 +31,27 @@ StringBuffer& StringBuffer::operator= (const StringBuffer& sb)
 void  StringBuffer::insert(const char* str, size_t pos)
 {
 	int size = strlen(str);
-	if (pos + size + 1 > max)
+	if (dim + size + 1 > max) //not enough space-> realloc
 	{
-		this->buffer = (char*)realloc(this->buffer, pos + size + 1);
-		this->max = pos + size + 1;
+		this->buffer = (char*)realloc(this->buffer, dim + size + 1);
+		this->max = dim + size + 1;
 	}
 	if (pos > dim)
+	{
 		memset(this->buffer + size, ' ', pos - this->dim);
-	memcpy(this->buffer + pos, str, size);
-	this->dim =pos + size;	
+		memcpy(this->buffer + pos, str, size);
+	}
+	else
+	{
+		char* tmp = (char*)malloc((dim - pos)* sizeof(char));
+		memcpy(tmp, this->buffer + pos, dim - pos); //split buffer
+		memcpy(this->buffer + pos, str,size);
+		memcpy(this->buffer + pos + size, tmp, dim - pos);
+		free(tmp);
+		tmp = NULL;
+	}
+
+	this->dim +=  size;	
 	this->buffer[dim] = '\0';
 }
 void StringBuffer::insert(const StringBuffer& sb, size_t pos)
@@ -74,10 +85,12 @@ const char* StringBuffer::c_str()
 
 void StringBuffer::set(const char* str)
 {
+	this->clear();
 	this->insert(str, 0);
 }
 void StringBuffer::set(const StringBuffer& sb)
 {
+	this->clear();
 	this->insert(sb.buffer, 0);
 }
 StringBuffer::~StringBuffer()

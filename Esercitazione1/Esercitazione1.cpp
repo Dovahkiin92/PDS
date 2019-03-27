@@ -17,7 +17,7 @@ int main()
 	printf("%zu", s1.size()); //124
 	s2.clear();
 	for (int i = 0; i < 10; i++)
-		s2.insert(s1, s2.size());
+		s2.insert(s1, 0);
 	printf(s2.c_str()); //Lorem ipsum ... 10 volte
 	printf("%zu", s2.size()); //1240
 
