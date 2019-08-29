@@ -21,6 +21,7 @@ StringBuffer& StringBuffer::operator= (const StringBuffer& sb)
 	if (this != &sb)
 	{
 		free(this->buffer);
+		this->buffer = NULL;
 		this->max = sb.max;
 		this->dim = this->max - 1;
 		this->buffer =(char*) calloc(max,sizeof(char));
